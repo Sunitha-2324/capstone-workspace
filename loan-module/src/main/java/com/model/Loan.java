@@ -10,6 +10,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "loanoptions")
@@ -22,18 +27,26 @@ public class Loan {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type_of_loan", nullable = false)
+    @NotNull(message = "Type of loan cannot be null")
     private LoanType typeOfLoan;
 
+    
     @Column(name = "interest_rate", nullable = false)
+    @DecimalMin(value = "0.0", inclusive = false, message = "Interest rate must be greater than zero")
+    @DecimalMax(value = "100.0", inclusive = true, message = "Interest rate must be less than or equal to 100.0")
     private BigDecimal interestRate;
 
     @Column(name = "max_amount", nullable = false)
+    @DecimalMin(value = "0.0", inclusive = false, message = "Max amount must be greater than zero")
     private BigDecimal maxAmount;
 
     @Column(name = "min_amount", nullable = false)
+    @DecimalMin(value = "0.0", inclusive = false, message = "Min amount must be greater than zero")
     private BigDecimal minAmount;
 
     @Column(name = "term_in_months", nullable = false)
+    @Min(value = 1, message = "Term in months must be at least 1")
+    @Max(value = 360, message = "Term in months must be no more than 360")
     private int termInMonths;
 
 	public Long getLoanId() {

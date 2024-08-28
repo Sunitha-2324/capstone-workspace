@@ -60,6 +60,7 @@ public class Customer {
     private Date dateOfBirth;
 
     @NotBlank(message = "PAN card cannot be empty")
+    @Pattern(regexp = "[A-Z]{5}\\d{4}[A-Z]{1}", message = "PAN card number should be in Correct format")
     @Column(name = "pan_card", unique = true, nullable = false)
     private String panCard;
 

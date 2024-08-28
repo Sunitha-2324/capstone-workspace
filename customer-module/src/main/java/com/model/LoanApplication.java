@@ -47,8 +47,8 @@ public class LoanApplication {
     // Constructors, Getters, and Setters
 
     public LoanApplication() {
-        this.applicationDate = new Date(); // Set default application date
-        this.status = ApplicationStatus.PENDING; // Set default status
+        this.applicationDate = new Date(); 
+        this.status = ApplicationStatus.PENDING; 
     }
 
     public Long getApplicationId() {
