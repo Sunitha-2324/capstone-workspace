@@ -12,47 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import com.model.Loan;
 import com.model.LoanApplication;
 import com.repository.LoanApplicationRepository;
-/*
-@Service
-public class LoanApplicationService {
 
-    @Autowired
-    private LoanApplicationRepository loanApplicationRepository;
-
-    @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private RestTemplate restTemplate;
-
-    private static final String LOAN_SERVICE_URL = "http://loanms/loans";
-
-    public Optional<LoanApplication> getApplicationById(Long applicationId) {
-        return loanApplicationRepository.findById(applicationId);
-    }
-
-    public void applyForLoan(Long customerId, Long loanId) {
-        // Retrieve loan details from the remote Loan service
-        Loan loan = restTemplate.getForObject(LOAN_SERVICE_URL + "/" + loanId, Loan.class);
-
-        if (loan == null) {
-            throw new IllegalArgumentException("Loan with ID " + loanId + " not found.");
-        }
-
-        // Check if the customer exists
-        if (!customerService.existsById(customerId)) {
-            throw new IllegalArgumentException("Customer with ID " + customerId + " does not exist.");
-        }
-
-        // Create and save the loan application
-        LoanApplication loanApplication = new LoanApplication();
-        loanApplication.setCustomerId(customerId);
-        loanApplication.setLoanId(loanId);
-
-        loanApplicationRepository.save(loanApplication);
-    }
-}
-*/
 
 
 @Service

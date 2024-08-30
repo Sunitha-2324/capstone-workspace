@@ -25,331 +25,6 @@ import com.service.LoanApplicationService;
 import jakarta.validation.Valid;
 
 
-/*@RestController
-@RequestMapping("/customers")
-public class CustomerController {
-
-    @Autowired
-    private CustomerService customerService;
-    
-    //extra added
-    @Autowired
-    private LoanApplicationService loanApplicationService;
-    
-    
-    @Autowired
-    private RestTemplate restTemplate;
-
-    // URL using the service name registered in Eureka
-    private static final String LOAN_SERVICE_URL = "http://loanms/loans";
-    
-    
-    
-    
-    //1. method one exception added for registration
-    
-    @PostMapping
-    public ResponseEntity<?> registerCustomer(@Valid @RequestBody Customer customer) {
-        try {
-            Customer newCustomer = customerService.registerCustomer(customer);
-            return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            // Handle specific exception for duplicate email or invalid input
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            // Handle any other exceptions
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
-        }
-    }
-    
-    
-    
-    
-    
-    
-    //login another
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        try {
-            Customer customer = customerService.login(loginRequest.getEmail(), loginRequest.getPassword());
-            if (customer != null) {
-                return ResponseEntity.ok("Login successful");
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-            }
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
-        }
-    }
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    @GetMapping("/loan-options")
-    public ResponseEntity<String> getAvailableLoanOptions() {
-        String loanOptions = restTemplate.getForObject(LOAN_SERVICE_URL, String.class);
-        return ResponseEntity.ok(loanOptions);
-    }
-    
-    
-    
-    
-    
-    @GetMapping("/application/{applicationId}")
-    public ResponseEntity<?> getApplicationById(@PathVariable Long applicationId) {
-        if (applicationId == null || applicationId <= 0) {
-            return ResponseEntity.badRequest().body("Invalid application ID provided.");
-        }
-
-        try {
-            Optional<LoanApplication> application = loanApplicationService.getApplicationById(applicationId);
-            if (application.isPresent()) {
-                return ResponseEntity.ok(application.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                     .body("Loan application with ID " + applicationId + " not found.");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("An error occurred: " + e.getMessage());
-        }
-    }
-
-    
-    
-    
-    
-    
- 
-    
-    
-    @PostMapping("/{customerId}/loan-applications")
-    public ResponseEntity<String> applyForLoan(
-            @PathVariable Long customerId, 
-            @Valid @RequestBody LoanApplicationRequest request) {
-        Long loanId = request.getLoanId();
-
-        
-        String loanUrl = LOAN_SERVICE_URL + "/" + loanId;
-        System.out.println("Attempting to retrieve loan details from URL: " + loanUrl);
-
-        try {
-            ResponseEntity<Loan> response = restTemplate.getForEntity(loanUrl, Loan.class);
-
-            if (response.getStatusCode() == HttpStatus.OK) {
-                loanApplicationService.applyForLoan(customerId, loanId);
-                return ResponseEntity.ok("Loan application submitted successfully.");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loan with ID " + loanId + " not found.");
-            }
-        } catch (HttpClientErrorException.NotFound e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loan with ID " + loanId + " not found.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while applying for the loan: " + e.getMessage());
-        }
-    }
-
-    
-    
-
-    
-    
-    
-    @GetMapping("/loan/{loanId}")
-    public ResponseEntity<?> getLoanById(@PathVariable Long loanId) {
-        String url = LOAN_SERVICE_URL + "/" + loanId;
-        try {
-            ResponseEntity<Loan> response = restTemplate.getForEntity(url, Loan.class);
-            return ResponseEntity.ok(response.getBody());
-        } catch (HttpClientErrorException.NotFound e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loan not found.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while fetching the loan data.");
-        }
-    }
-    
-    
-    @GetMapping("/loan-options/type/{typeOfLoan}")
-    public ResponseEntity<?> getLoansByType(@PathVariable("typeOfLoan") String typeOfLoan) {
-        String url = LOAN_SERVICE_URL + "/type/" + typeOfLoan;
-
-        try {
-            // Fetch loans by type from the LoanService
-            ResponseEntity<List<Loan>> response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<Loan>>() {}
-            );
-
-            if (response.getStatusCode() == HttpStatus.NO_CONTENT) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(response.getBody());
-        } catch (HttpClientErrorException.BadRequest e) {
-            return ResponseEntity.badRequest().body("Invalid loan type: " + typeOfLoan);
-        } catch (HttpClientErrorException.NotFound e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loans not found for type: " + typeOfLoan);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An error occurred while retrieving loans: " + e.getMessage());
-        }
-    }
-}*/
-
-
-
-
-
-
-
-
-
-// after adding rest template
-
-
-
-
-
-
-/*
-
-@RestController
-@RequestMapping("/customers")
-public class CustomerController {
-
-    @Autowired
-    private CustomerService customerService;
-
-    @Autowired
-    private LoanApplicationService loanApplicationService;
-
-    @PostMapping
-    public ResponseEntity<?> registerCustomer(@Valid @RequestBody Customer customer) {
-        try {
-            Customer newCustomer = customerService.registerCustomer(customer);
-            return new ResponseEntity<>(newCustomer, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
-        }
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        try {
-            Customer customer = customerService.login(loginRequest.getEmail(), loginRequest.getPassword());
-            if (customer != null) {
-                return ResponseEntity.ok("Login successful");
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-            }
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/loan-options")
-    public ResponseEntity<String> getAvailableLoanOptions() {
-        try {
-            String loanOptions = customerService.getAvailableLoanOptions();
-            return ResponseEntity.ok(loanOptions);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while retrieving loan options.");
-        }
-    }
-
-    @GetMapping("/loan/{loanId}")
-    public ResponseEntity<?> getLoanById(@PathVariable Long loanId) {
-        try {
-            Loan loan = customerService.getLoanById(loanId);
-            if (loan != null) {
-                return ResponseEntity.ok(loan);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Loan not found.");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while retrieving loan data.");
-        }
-    }
-
-    @PostMapping("/{customerId}/loan-applications")
-    public ResponseEntity<String> applyForLoan(
-            @PathVariable Long customerId, 
-            @Valid @RequestBody LoanApplicationRequest request) {
-        Long loanId = request.getLoanId();
-        try {
-            loanApplicationService.applyForLoan(customerId, loanId);
-            return ResponseEntity.ok("Loan application submitted successfully.");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while applying for the loan: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/loan-options/type/{typeOfLoan}")
-    public ResponseEntity<?> getLoansByType(@PathVariable("typeOfLoan") String typeOfLoan) {
-        try {
-            List<Loan> loans = customerService.getLoansByType(typeOfLoan);
-            if (loans.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(loans);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Invalid loan type: " + typeOfLoan);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An error occurred while retrieving loans: " + e.getMessage());
-        }
-    }
-
-    @GetMapping("/application/{applicationId}")
-    public ResponseEntity<?> getApplicationById(@PathVariable Long applicationId) {
-        if (applicationId == null || applicationId <= 0) {
-            return ResponseEntity.badRequest().body("Invalid application ID provided.");
-        }
-
-        try {
-            Optional<LoanApplication> application = loanApplicationService.getApplicationById(applicationId);
-            if (application.isPresent()) {
-                return ResponseEntity.ok(application.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                     .body("Loan application with ID " + applicationId + " not found.");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("An error occurred: " + e.getMessage());
-        }
-    }
-}
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @RestController
 @RequestMapping("/customers")
 @Validated
@@ -363,6 +38,7 @@ public class CustomerController {
     @Autowired
     private LoanApplicationService loanApplicationService;
 
+    //1. Register for customer
     @PostMapping
     public ResponseEntity<?> registerCustomer(@Valid @RequestBody Customer customer) {
         logger.info("Received request to register customer with email: {}", customer.getEmail());
@@ -379,6 +55,8 @@ public class CustomerController {
         }
     }
 
+    
+    //2. Customer Login 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         logger.info("Received login request for email: {}", loginRequest.getEmail());
@@ -400,6 +78,8 @@ public class CustomerController {
         }
     }
 
+    
+    //3. It shows available loan options
     @GetMapping("/loan-options")
     public ResponseEntity<String> getAvailableLoanOptions() {
         logger.info("Received request to get available loan options");
@@ -412,6 +92,8 @@ public class CustomerController {
         }
     }
 
+    
+    //4. search loan by ID
     @GetMapping("/loan/{loanId}")
     public ResponseEntity<?> getLoanById(@PathVariable Long loanId) {
         logger.info("Received request to get loan by ID: {}", loanId);
@@ -428,7 +110,10 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while retrieving loan data.");
         }
     }
+    
+    
 
+    //5. search loan application by using customer ID
     @PostMapping("/{customerId}/loan-applications")
     public ResponseEntity<String> applyForLoan(
             @PathVariable Long customerId, 
@@ -445,7 +130,10 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while applying for the loan: " + e.getMessage());
         }
     }
+    
+    
 
+    //6. It shows type of loans available in loan-options
     @GetMapping("/loan-options/type/{typeOfLoan}")
     public ResponseEntity<?> getLoansByType(@PathVariable("typeOfLoan") String typeOfLoan) {
         logger.info("Received request to get loans by type: {}", typeOfLoan);
@@ -491,7 +179,7 @@ public class CustomerController {
         }
     }*/
     
-    //it is by getApplicationByIdAndCustomerId
+    //7. it will shows the application details by using customerId and ApplicationId
     @GetMapping("/{customerId}/application/{applicationId}")
     public ResponseEntity<?> getApplicationByIdAndCustomerId(
         @PathVariable Long customerId,
@@ -521,7 +209,9 @@ public class CustomerController {
     }
     
     
-    //
+    
+    
+    //8. it shows application details by using customerId
     
     @GetMapping("/{customerId}/applications")
     public ResponseEntity<?> getApplicationsByCustomerId(@PathVariable Long customerId) {
